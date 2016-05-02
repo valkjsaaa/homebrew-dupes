@@ -14,6 +14,9 @@ class Bc < Formula
 
   keg_only :provided_by_osx
 
+  depends_on "bison" => :build unless OS.mac?
+  depends_on "flex" => :build unless OS.mac?
+
   def install
     system "./configure",
       "--disable-debug",
