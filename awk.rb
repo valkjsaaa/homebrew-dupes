@@ -5,6 +5,11 @@ class Awk < Formula
   version "20121220"
   sha256 "8dc092165c5a4e1449f964286483d06d0dbfba4b0bd003cb5dab30de8f6d9b83"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "aac8124dc15c9eb91f870d09af7e1efc390c59f6d02eae2b06d47e55cd7933b4" => :x86_64_linux
+  end
+
   conflicts_with "gawk",
     :because => "both install awk executables."
 
