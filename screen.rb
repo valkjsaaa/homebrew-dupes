@@ -34,6 +34,7 @@ class Screen < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "homebrew/dupes/ncurses" unless OS.mac?
 
   def install
     if build.head?
