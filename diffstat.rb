@@ -1,16 +1,15 @@
 class Diffstat < Formula
   desc "Produce graph of changes introduced by a diff file"
   homepage "http://invisible-island.net/diffstat/"
-  url "https://mirrors.kernel.org/debian/pool/main/d/diffstat/diffstat_1.60.orig.tar.gz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/diffstat/diffstat_1.60.orig.tar.gz"
-  sha256 "2032e418b43bae70d548e32da901ebc4ac12972381de1314bebde0b126fb0123"
+  url "https://mirrors.kernel.org/debian/pool/main/d/diffstat/diffstat_1.61.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/diffstat/diffstat_1.61.orig.tar.gz"
+  sha256 "25359e0c27183f997b36c9202583b5dc2df390c20e22a92606af4bf7856a55ee"
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "a668a1005bd2637d1e8d53981e7ab245d436f5edf12aaf3d50b9586dc2c34d60" => :el_capitan
-    sha256 "e0c5096b5a5a8a9fba502479897950c3d040aeb6026c7907a8a49320b0d15012" => :yosemite
-    sha256 "d70bbd3435223cafaaf268ed55ef4152a56ff03daee138775561a6d96ef51e1c" => :mavericks
+    sha256 "458fbe3438d70f1cf4904e63b1563d6a4a3c0bfd83448e8ed8e142459854e36f" => :el_capitan
+    sha256 "8f191c34cebece4e6576daa5eab661cd1eec78957e508c3b369a9eed7019c475" => :yosemite
+    sha256 "06cae3bee231b56b08c850fc0b3721933296de4013bf5f8894e8395778bfa3f4" => :mavericks
   end
 
   def install
