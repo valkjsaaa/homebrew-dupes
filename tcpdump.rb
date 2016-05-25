@@ -14,8 +14,13 @@ class Tcpdump < Formula
     sha256 "e607b5f39982171e8a1af4548b68401f6ff61547a312310a5cfd900b87dffde2" => :x86_64_linux
   end
 
-  depends_on "homebrew/dupes/libpcap" => [(:optional if OS.mac?)].compact
   depends_on "openssl"
+
+  if OS.mac?
+    depends_on "homebrew/dupes/libpcap" => :optional
+  else
+    depends_on "homebrew/dupes/libpcap"
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}",
