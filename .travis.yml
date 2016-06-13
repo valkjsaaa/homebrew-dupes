@@ -29,7 +29,7 @@ before_install:
   - ulimit -n 1024
 
 script:
-  - brew test-bot --tap=linuxbrew/dupes
+  - brew test-bot --tap=homebrew/dupes
 
 notifications:
   slack:
