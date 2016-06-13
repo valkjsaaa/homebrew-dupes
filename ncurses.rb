@@ -7,10 +7,10 @@ class Ncurses < Formula
   revision 1
 
   bottle do
-    sha256 "3d608e7522a8855cb760ba8d8b3e7fa2e9896389844f6b89f67f652e710a08c6" => :el_capitan
-    sha256 "c22a8d91d717757fe2e1c8a84c41151bd81e1651368681fe20a0283d8e5e745f" => :yosemite
-    sha256 "87ebfc0fd5a86ac7a3a5d574f0cb513b5e8d856768b31609451d9e655ece8f19" => :mavericks
-    sha256 "65a4fb6eae29b3ca3dd9461aa93b76c505c96b203dc38c3d739725143922492e" => :x86_64_linux
+    revision 1
+    sha256 "ace4b172a3be12aa38e7bcedb4693ce560b2735c119c6ac549284e08b4fd3684" => :el_capitan
+    sha256 "8e630a740f6930195ee6f292e6ed9585ce3318d946abac976131e6092524044c" => :yosemite
+    sha256 "b37af8a27570fb44ae539a02e66d5e5391ddf3eae37d5ca93a020f9a12b32cca" => :mavericks
   end
 
   keg_only :provided_by_osx
@@ -51,40 +51,34 @@ class Ncurses < Formula
   def make_libncurses_symlinks
     major = version.to_s.split(".")[0]
 
-    cd lib do
-      %w[form menu ncurses panel].each do |name|
-        if OS.mac?
-          ln_s "lib#{name}w.#{major}.dylib", "lib#{name}.dylib"
-          ln_s "lib#{name}w.#{major}.dylib", "lib#{name}.#{major}.dylib"
-        else
-          ln_s "lib#{name}w.so.#{major}", "lib#{name}.so"
-          ln_s "lib#{name}w.so.#{major}", "lib#{name}.so.#{major}"
-        end
-        ln_s "lib#{name}w.a", "lib#{name}.a"
-        ln_s "lib#{name}w_g.a", "lib#{name}_g.a"
-      end
-
-      ln_s "libncurses++w.a", "libncurses++.a"
-      ln_s "libncurses.a", "libcurses.a"
+    %w[form menu ncurses panel].each do |name|
       if OS.mac?
-        ln_s "libncurses.dylib", "libcurses.dylib"
+        lib.install_symlink "lib#{name}w.#{major}.dylib" => "lib#{name}.dylib"
+        lib.install_symlink "lib#{name}w.#{major}.dylib" => "lib#{name}.#{major}.dylib"
       else
-        ln_s "libncurses.so", "libcurses.so"
-        ln_s "libncurses.so", "libtinfo.so"
+        lib.install_symlink "lib#{name}w.so.#{major}" => "lib#{name}.so"
+        lib.install_symlink "lib#{name}w.so.#{major}" => "lib#{name}.so.#{major}"
       end
+      lib.install_symlink "lib#{name}w.a" => "lib#{name}.a"
+      lib.install_symlink "lib#{name}w_g.a" => "lib#{name}_g.a"
     end
 
-    cd lib/"pkgconfig" do
-      ln_s "ncursesw.pc", "ncurses.pc"
+    lib.install_symlink "libncurses++w.a" => "libncurses++.a"
+    lib.install_symlink "libncurses.a" => "libcurses.a"
+    if OS.mac?
+      lib.install_symlink "libncurses.dylib" => "libcurses.dylib"
+    else
+      lib.install_symlink "libncurses.so" => "libcurses.so"
+      lib.install_symlink "libncurses.so" => "libtinfo.so"
     end
 
-    cd bin do
-      ln_s "ncursesw#{major}-config", "ncurses#{major}-config"
-    end
+    (lib/"pkgconfig").install_symlink "ncursesw.pc" => "ncurses.pc"
 
-    ln_s [
+    bin.install_symlink "ncursesw#{major}-config" => "ncurses#{major}-config"
+
+    include.install_symlink [
       "ncursesw/curses.h", "ncursesw/form.h", "ncursesw/ncurses.h",
-      "ncursesw/term.h", "ncursesw/termcap.h"], include
+      "ncursesw/term.h", "ncursesw/termcap.h"]
   end
 
   test do
