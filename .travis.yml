@@ -19,10 +19,11 @@ before_install:
   - mkdir $HOME/.linuxbrew
   - curl -L https://github.com/Linuxbrew/brew/tarball/master | tar xz -m --strip 1 -C $HOME/.linuxbrew
   - PATH="$HOME/.linuxbrew/bin:$HOME/.linuxbrew/sbin:$PATH"
-  - rm -rf "$(brew --repo $TRAVIS_REPO_SLUG)"
-  - mkdir -p "$(brew --repo $TRAVIS_REPO_SLUG)"
-  - rsync -az "$TRAVIS_BUILD_DIR/" "$(brew --repo $TRAVIS_REPO_SLUG)"
-  - export TRAVIS_BUILD_DIR="$(brew --repo $TRAVIS_REPO_SLUG)"
+  - REPO="$(brew --repo homebrew/dupes)"
+  - rm -rf "$REPO"
+  - mkdir -p "$REPO"
+  - rsync -az "$TRAVIS_BUILD_DIR/" "$REPO"
+  - export TRAVIS_BUILD_DIR="$REPO"
   - cd "$(brew --repo)"
   - export HOMEBREW_DEVELOPER="1"
   - ulimit -n 1024
