@@ -1,36 +1,45 @@
+class LsofDownloadStrategy < CurlDownloadStrategy
+  def stage
+    super
+    safe_system "/usr/bin/tar", "xf", "#{name}_#{version}_src.tar"
+    cd "#{name}_#{version}_src"
+  end
+end
+
 class Lsof < Formula
   desc "Utility to list open files"
   homepage "https://people.freebsd.org/~abe/"
-  # 4.89 has major problems on OS X blocking upgrade for now.
-  # https://github.com/Homebrew/homebrew-dupes/pull/537
-  # url "ftp://sunsite.ualberta.ca/pub/Mirror/lsof/lsof_4.88.tar.bz2"
-  url "https://mirrorservice.org/sites/lsof.itap.purdue.edu/pub/tools/unix/lsof/OLD/lsof_4.88.tar.bz2"
-  sha256 "fe6f9b0e26b779ccd0ea5a0b6327c2b5c38d207a6db16f61ac01bd6c44e5c99b"
+  url "https://mirrorservice.org/sites/lsof.itap.purdue.edu/pub/tools/unix/lsof/lsof_4.89.tar.bz2",
+    :using => LsofDownloadStrategy
+  sha256 "81ac2fc5fdc944793baf41a14002b6deb5a29096b387744e28f8c30a360a3718"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "166741406a0a1d6ac78b82274d56f1bb1d24c4d4cd2421919e48ce42566f90ca" => :el_capitan
-    sha256 "b8292349936eea9e0f24daf01818cba06ce5e689b4e97f026a431034c509e67d" => :yosemite
-    sha256 "92a1f687aa8a0df343b90771e16f6a11aa60968c034c9660318e38142533fb82" => :mavericks
-    sha256 "c8b71e4182d76d9d4715bdef0dbdbe1678c37b4f2597ff7d2f1472a4bfd2d2fa" => :x86_64_linux
+    sha256 "7a1af5022ec08f89fb8b2dc40c176e38a90f6ccd7a0dc3a789738a0a27a60c14" => :el_capitan
+    sha256 "e0500f7de8b92f559375223e0064b17f0b7e5d7f1c7c955e08982e9eb12cafa0" => :yosemite
+    sha256 "52ca808a856bd9813a915da3f52522b8be7df08a3a9c91157143627fa0051c77" => :mavericks
+  end
+
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/c3acbb8/lsof/lsof-489-darwin-compile-fix.patch"
+    sha256 "997d8c147070987350fc12078ce83cd6e9e159f757944879d7e4da374c030755"
   end
 
   def install
     ENV["LSOF_INCLUDE"] = "#{MacOS.sdk_path}/usr/include"
 
-    system "tar", "xf", "lsof_#{version}_src.tar"
+    # Source hardcodes full header paths at /usr/include
+    inreplace %w[
+      dialects/darwin/kmem/dlsof.h
+      dialects/darwin/kmem/machine.h
+      dialects/darwin/libproc/machine.h
+    ], "/usr/include", "#{MacOS.sdk_path}/usr/include"
 
-    cd "lsof_#{version}_src" do
-      # Source hardcodes full header paths at /usr/include
-      inreplace %w[dialects/darwin/kmem/dlsof.h dialects/darwin/kmem/machine.h
-                   dialects/darwin/libproc/machine.h],
-                "/usr/include", MacOS.sdk_path.to_s + "/usr/include"
-
-      mv "00README", "../README"
-      system "./Configure", "-n", `uname -s`.chomp.downcase
-      system "make"
-      bin.install "lsof"
-    end
+    mv "00README", "README"
+    system "./Configure", "-n", `uname -s`.chomp.downcase
+    system "make"
+    bin.install "lsof"
+    man8.install "lsof.8"
   end
 
   test do
