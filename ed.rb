@@ -25,6 +25,8 @@ class Ed < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+
+    bin.install_symlink "ed" => "ged" if build.with? "default-names"
   end
 
   def caveats
@@ -38,8 +40,7 @@ class Ed < Formula
   test do
     testfile = (testpath/"test")
     testfile.write "Hello world"
-    ed = bin/(build.with?("default-names") ? "ed" : "ged")
-    pipe_output("#{ed} -s #{testfile}", ",s/o//\nw\n")
+    pipe_output("#{bin}/ged -s #{testfile}", ",s/o//\nw\n")
     assert_equal "Hell world", testfile.read.chomp
   end
 end
