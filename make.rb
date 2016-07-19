@@ -1,15 +1,14 @@
 class Make < Formula
   desc "Utility for directing compilation"
   homepage "https://www.gnu.org/software/make/"
-  url "http://ftpmirror.gnu.org/make/make-4.2.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/make/make-4.2.tar.bz2"
-  sha256 "4e5ce3b62fe5d75ff8db92b7f6df91e476d10c3aceebf1639796dc5bfece655f"
+  url "https://ftpmirror.gnu.org/make/make-4.2.1.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/make/make-4.2.1.tar.bz2"
+  sha256 "d6e262bf3601b42d2b1e4ef8310029e1dcf20083c5446b4b7aa67081fdffc589"
 
   bottle do
-    sha256 "e6f872ec47d2157a7d5ae3f6854128844f8e305fb7ee54dd98c23fa7c4bc1561" => :el_capitan
-    sha256 "c5cc8218cc2f379bdb8f5c5fb3847ac4a952f952cd6169b232f68d2cd99527f5" => :yosemite
-    sha256 "04dd0b10205bce4ed7e0c58fea3363a72fe7116346fa0ae7fe7fa4116832f60a" => :mavericks
-    sha256 "e38903e23b2d3f87208d185a150dc3c5f6ab95965fafc2ee56a40d70ae5b386c" => :x86_64_linux
+    sha256 "0f0c4fa8340fa5b5269deed987867a647bceecb17d6687276c035dad4753ca8b" => :el_capitan
+    sha256 "8839228946c326de73eec5c256493e00d5130eecffac609c8aa9783f0e103304" => :yosemite
+    sha256 "e36e0bbdd7f750ffdf8726e91a112a8e1145cdf91a6f9fb73cfe0ac1278aea33" => :mavericks
   end
 
   option "with-default-names", "Do not prepend 'g' to the binary"

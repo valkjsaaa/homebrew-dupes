@@ -2,19 +2,17 @@
 class FileFormula < Formula
   desc "Utility to determine file types"
   homepage "https://www.darwinsys.com/file/"
-  url "ftp://ftp.astron.com/pub/file/file-5.25.tar.gz"
-  mirror "https://fossies.org/linux/misc/file-5.25.tar.gz"
-  sha256 "3735381563f69fb4239470b8c51b876a80425348b8285a7cded8b61d6b890eca"
+  url "ftp://ftp.astron.com/pub/file/file-5.28.tar.gz"
+  mirror "https://fossies.org/linux/misc/file-5.28.tar.gz"
+  sha256 "0ecb5e146b8655d1fa84159a847ee619fc102575205a0ff9c6cc60fc5ee2e012"
 
   head "https://github.com/file/file.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "17cb380bfdf672e4cad9a324f1e81f7cc72d2f390cc8a732046f976b21362641" => :el_capitan
-    sha256 "3116d7d15a6ca96347b53af0c28773f5d7a35b41de8f7451f9c23ef1196b7dda" => :yosemite
-    sha256 "cace05a8a01b3a64b7e4c0d848b5abf69395750f63169fdd7eb460b4944f3556" => :mavericks
-    sha256 "a12b00e01998d645f729feaef012e2c66f3dadeaff9c23516cd331f89f8240fd" => :x86_64_linux
+    sha256 "23e98e27a13e15e5f24c7c52fe7d6e0c49ec2cd53e572f4f2823a99af69eb593" => :el_capitan
+    sha256 "2cdfbee9acc5a545cbe395eeee1388fcdf8dfe3f9c970dd530b891dfb5bcc2c0" => :yosemite
+    sha256 "292d9623781b174dec6c53fda62a9e056311b81d17960d7693796532b24fcc05" => :mavericks
   end
 
   keg_only :provided_by_osx
@@ -22,9 +20,6 @@ class FileFormula < Formula
   depends_on "libmagic"
 
   def install
-    # Clean up "src/magic.h" as per http://bugs.gw.com/view.php?id=330
-    rm "src/magic.h"
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install-exec"
