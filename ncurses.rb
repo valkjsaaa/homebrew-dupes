@@ -42,6 +42,8 @@ class Ncurses < Formula
                           "--with-manpage-format=normal",
                           "--with-shared",
                           "--with-gpm=no"
+    system "make"
+    ENV.deparallelize
     system "make", "install"
     make_libncurses_symlinks
 
@@ -79,7 +81,8 @@ class Ncurses < Formula
 
     include.install_symlink [
       "ncursesw/curses.h", "ncursesw/form.h", "ncursesw/ncurses.h",
-      "ncursesw/term.h", "ncursesw/termcap.h"]
+      "ncursesw/term.h", "ncursesw/termcap.h"
+    ]
   end
 
   test do
