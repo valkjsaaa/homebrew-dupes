@@ -1,16 +1,14 @@
 class TclTk < Formula
   desc "Tool Command Language"
   homepage "https://www.tcl.tk/"
-  url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.4/tcl8.6.4-src.tar.gz"
-  version "8.6.4"
-  sha256 "9e6ed94c981c1d0c5f5fefb8112d06c6bf4d050a7327e95e71d417c416519c8d"
+  url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.6/tcl8.6.6-src.tar.gz"
+  version "8.6.6"
+  sha256 "a265409781e4b3edcc4ef822533071b34c3dc6790b893963809b9fe221befe07"
 
   bottle do
-    revision 2
-    sha256 "3b9d241052d9a545d7ba46c5acb915d7da33ab12f4620b6310c5ea844ee9d76d" => :el_capitan
-    sha256 "8c0b82cb4ae578118d008e28b06a1eb74ca1ef565ce13ed97d2629108a6a5c29" => :yosemite
-    sha256 "e1067fd5a4e25e9a2a3a7631bf6bb34de2abead74761934b57f31704782dea55" => :mavericks
-    sha256 "fda3d516b2c4366fe43d25428c405c9dea06fac3d10fd993677f9ca9758534eb" => :x86_64_linux
+    sha256 "0659e242f85d5c12ea1d787caeccb509b82a382f09715bd3c1cf07f80b90a954" => :el_capitan
+    sha256 "7b560a2d1e586cd3e680a82b825d4da7bd1901a116311ee12fedb5bd1b6b565f" => :yosemite
+    sha256 "f81641aa06110c08cf68516748a06239ce26c93a4bbaa36ee4baef181b3e82ea" => :mavericks
   end
 
   keg_only :provided_by_osx,
@@ -26,14 +24,14 @@ class TclTk < Formula
   depends_on :x11 => :optional
 
   resource "tk" do
-    url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.4/tk8.6.4-src.tar.gz"
-    version "8.6.4"
-    sha256 "08f99df85e5dc9c4271762163c6aabb962c8b297dc5c4c1af8bdd05fc2dd26c1"
+    url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.6/tk8.6.6-src.tar.gz"
+    version "8.6.6"
+    sha256 "d62c371a71b4744ed830e3c21d27968c31dba74dd2c45f36b9b071e6d88eb19d"
   end
 
   resource "tcllib" do
-    url "https://github.com/tcltk/tcllib/archive/tcllib_1_17.tar.gz"
-    sha256 "95c676130ce2fdb00e8a6f79c4fea9e79d071063783a61db9274647920d97a03"
+    url "https://github.com/tcltk/tcllib/archive/tcllib_1_18.tar.gz"
+    sha256 "bcf0ba7656e3a99ffa5fc0ce0f4a95616530979539bddb8da43903b82983603f"
   end
 
   # sqlite won't compile on Tiger due to missing function;
