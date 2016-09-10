@@ -46,6 +46,9 @@ class Screen < Formula
     # before osdef.sh script generates it.
     ENV.deparallelize
 
+    # Fix error: dereferencing pointer to incomplete type 'struct utmp'
+    ENV.append_to_cflags "-include utmp.h" unless OS.mac?
+
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
