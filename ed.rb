@@ -1,16 +1,15 @@
 class Ed < Formula
   desc "Classic UNIX line editor"
   homepage "https://www.gnu.org/software/ed/ed.html"
-  url "https://ftpmirror.gnu.org/ed/ed-1.12.tar.lz"
-  mirror "https://ftp.gnu.org/gnu/ed/ed-1.12.tar.lz"
-  sha256 "d2655743144a0f6071a619dea2e142d75d2335b3dbfe8d4a643984a10e0a802f"
+  url "https://ftpmirror.gnu.org/ed/ed-1.13.tar.lz"
+  mirror "https://ftp.gnu.org/gnu/ed/ed-1.13.tar.lz"
+  sha256 "cd66c54a53cd6ef35a217556e7b2b2fdd973ca2708f4fc41636b0bc06388c7d3"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "54c52be45bd1e33bcc50aab372e9ba3c2ef1cc7de5412b568710aa4ad1a55129" => :el_capitan
-    sha256 "3992f9c431767907a9156ff007dd9431406dd384394d2da8fd48eb43b6baeb57" => :yosemite
-    sha256 "10f5f317d4a6943c53b58fa937e9a14214a164b3cd764e2b747473b230b8a2a1" => :mavericks
-    sha256 "e8b9212f903c45265a4a84d2ef600668109b8a5ae357e8b70882ae9ee35f27c2" => :x86_64_linux
+    sha256 "b276749b82fc6469a4ca7172bf768b478e28d63ff56e6e4edc3447dddb6dc070" => :el_capitan
+    sha256 "917a393cb31564765f482d19090199b24a7f1120f14d5943a47672680457bd19" => :yosemite
+    sha256 "c61efe8a7243f76298205003952af63c4ec20593ff0d9c861dff2f947eaceb36" => :mavericks
   end
 
   deprecated_option "default-names" => "with-default-names"
@@ -38,9 +37,10 @@ class Ed < Formula
   end
 
   test do
-    testfile = (testpath/"test")
-    testfile.write "Hello world"
-    pipe_output("#{bin}/ged -s #{testfile}", ",s/o//\nw\n")
-    assert_equal "Hell world", testfile.read.chomp
+    testfile = testpath/"test"
+    testfile.write "Hello world\n"
+    cmd = build.with?("default-names") ? "ed" : "ged"
+    pipe_output("#{bin}/#{cmd} -s #{testfile}", ",s/o//\nw\n", 0)
+    assert_equal "Hell world\n", testfile.read
   end
 end

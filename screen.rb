@@ -3,9 +3,9 @@ class Screen < Formula
   homepage "https://www.gnu.org/software/screen"
 
   stable do
-    url "https://ftpmirror.gnu.org/screen/screen-4.3.1.tar.gz"
-    mirror "https://ftp.gnu.org/gnu/screen/screen-4.3.1.tar.gz"
-    sha256 "fa4049f8aee283de62e283d427f2cfd35d6c369b40f7f45f947dbfd915699d63"
+    url "https://ftpmirror.gnu.org/screen/screen-4.4.0.tar.gz"
+    mirror "https://ftp.gnu.org/gnu/screen/screen-4.4.0.tar.gz"
+    sha256 "ef722a54759a3bf23aad272bbf33c414c1078cad6bcd982fada93c0d7917218b"
 
     # This patch is to disable the error message
     # "/var/run/utmp: No such file or directory" on launch
@@ -16,10 +16,9 @@ class Screen < Formula
   end
 
   bottle do
-    sha256 "2589ee93c83a8ecdb6823b31ed94a14e1eba0932cf73d33a9c1941cf25919fc9" => :el_capitan
-    sha256 "4a46700acd2fa5c174f21bf2631122815b122727b22e04927d70049f14a77bcc" => :yosemite
-    sha256 "4c91084adb0ec83e263f0038b812742c293c1b910d4c9ea4e9b8cb6fdce3d66c" => :mavericks
-    sha256 "cf731cb1d8e0b2376b03677dee52ee89566eaec74387347e0c0e7400075641ff" => :x86_64_linux
+    sha256 "791f7efb94556fee2535bad543dd3ded0afc85b083fed0ce354c9cf859479cee" => :el_capitan
+    sha256 "34713de232c8da57b7af9c38eda55cc9f649dc7713ad3c92a58a7ea23b964af1" => :yosemite
+    sha256 "456f6a6a6743c4e0dc1af4793fbe4e8908ba966510f2edeaecf0e46023a5c7e5" => :mavericks
   end
 
   head do
@@ -35,7 +34,6 @@ class Screen < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "homebrew/dupes/ncurses" unless OS.mac?
 
   def install
     if build.head?
@@ -46,9 +44,6 @@ class Screen < Formula
     # because of trying to compile files which depend osdef.h
     # before osdef.sh script generates it.
     ENV.deparallelize
-
-    # Fix error: dereferencing pointer to incomplete type 'struct utmp'
-    ENV.append_to_cflags "-include utmp.h" unless OS.mac?
 
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",
