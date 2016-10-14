@@ -14,8 +14,6 @@ class Openldap < Formula
 
   keg_only :provided_by_osx
 
-  option "with-memberof", "Include memberof overlay"
-  option "with-unique", "Include unique overlay"
   option "with-sssvlv", "Enable server side sorting and virtual list view"
 
   depends_on "berkeley-db4" => :optional
@@ -28,11 +26,25 @@ class Openldap < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
+      --enable-accesslog
+      --enable-auditlog
+      --enable-constraint
+      --enable-dds
+      --enable-deref
+      --enable-dyngroup
+      --enable-dynlist
+      --enable-memberof
+      --enable-ppolicy
+      --enable-proxycache
+      --enable-refint
+      --enable-retcode
+      --enable-seqmod
+      --enable-translucent
+      --enable-unique
+      --enable-valsort
     ]
 
     args << "--enable-bdb=no" << "--enable-hdb=no" if build.without? "berkeley-db4"
-    args << "--enable-memberof" if build.with? "memberof"
-    args << "--enable-unique" if build.with? "unique"
     args << "--enable-sssvlv=yes" if build.with? "sssvlv"
 
     system "./configure", *args
@@ -42,5 +54,9 @@ class Openldap < Formula
     # https://github.com/Homebrew/homebrew-dupes/pull/452
     chmod 0755, Dir[etc/"openldap/*"]
     chmod 0755, Dir[etc/"openldap/schema/*"]
+  end
+
+  test do
+    system sbin/"slappasswd", "-s", "test"
   end
 end
