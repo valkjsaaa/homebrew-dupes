@@ -7,16 +7,14 @@ class Openldap < Formula
 
   bottle do
     cellar :any
-    sha256 "853d71820cbb7f604004c4f6d4f0196610d5df5a7b71be9480d5439567943853" => :el_capitan
-    sha256 "0b59c5418184ff1a96514369ddf34d8388c8f1306d2231d831b7984a74b4f48f" => :yosemite
-    sha256 "210e5b3b003c0b47a5c2f0274255fff80424576de46cda43525919db6e6fd7a6" => :mavericks
-    sha256 "3299f7945705484cb6c21e308a278b44485818f64e217f04c15909c1c030a166" => :x86_64_linux
+    rebuild 1
+    sha256 "8b55762758ce839c54a427462bd311cf9604be6258b5c07dfc65e779a70ed1b2" => :sierra
+    sha256 "bcbe0d00fc34d029211b5de10a68bbdb0be078c3197039356e4d0f25d01e82f2" => :el_capitan
+    sha256 "95bb3356c3b5c61be00583cd0351a538dc0f017db25c6cf054badd0756e56e9c" => :yosemite
   end
 
   keg_only :provided_by_osx
 
-  option "with-memberof", "Include memberof overlay"
-  option "with-unique", "Include unique overlay"
   option "with-sssvlv", "Enable server side sorting and virtual list view"
 
   depends_on "berkeley-db4" => :optional
@@ -29,11 +27,25 @@ class Openldap < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
+      --enable-accesslog
+      --enable-auditlog
+      --enable-constraint
+      --enable-dds
+      --enable-deref
+      --enable-dyngroup
+      --enable-dynlist
+      --enable-memberof
+      --enable-ppolicy
+      --enable-proxycache
+      --enable-refint
+      --enable-retcode
+      --enable-seqmod
+      --enable-translucent
+      --enable-unique
+      --enable-valsort
     ]
 
     args << "--enable-bdb=no" << "--enable-hdb=no" if build.without? "berkeley-db4"
-    args << "--enable-memberof" if build.with? "memberof"
-    args << "--enable-unique" if build.with? "unique"
     args << "--enable-sssvlv=yes" if build.with? "sssvlv"
 
     system "./configure", *args
@@ -43,5 +55,9 @@ class Openldap < Formula
     # https://github.com/Homebrew/homebrew-dupes/pull/452
     chmod 0755, Dir[etc/"openldap/*"]
     chmod 0755, Dir[etc/"openldap/schema/*"]
+  end
+
+  test do
+    system sbin/"slappasswd", "-s", "test"
   end
 end
