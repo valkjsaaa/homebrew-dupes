@@ -2,25 +2,27 @@
 class FileFormula < Formula
   desc "Utility to determine file types"
   homepage "https://www.darwinsys.com/file/"
-  url "ftp://ftp.astron.com/pub/file/file-5.28.tar.gz"
-  mirror "https://fossies.org/linux/misc/file-5.28.tar.gz"
-  sha256 "0ecb5e146b8655d1fa84159a847ee619fc102575205a0ff9c6cc60fc5ee2e012"
-
+  url "ftp://ftp.astron.com/pub/file/file-5.29.tar.gz"
+  mirror "https://fossies.org/linux/misc/file-5.29.tar.gz"
+  sha256 "ea661277cd39bf8f063d3a83ee875432cc3680494169f952787e002bdd3884c0"
   head "https://github.com/file/file.git"
 
   bottle do
     cellar :any
-    sha256 "23e98e27a13e15e5f24c7c52fe7d6e0c49ec2cd53e572f4f2823a99af69eb593" => :el_capitan
-    sha256 "2cdfbee9acc5a545cbe395eeee1388fcdf8dfe3f9c970dd530b891dfb5bcc2c0" => :yosemite
-    sha256 "292d9623781b174dec6c53fda62a9e056311b81d17960d7693796532b24fcc05" => :mavericks
-    sha256 "bc7bbeaaf1599f1e1bf9eb4671f34427b9c98880080adbdc6db954e36a51600c" => :x86_64_linux
+    sha256 "6f11492cf5eb0573171f1fa3d320705480f6338069273def97ac2addd0e1ebc9" => :sierra
+    sha256 "9af23bd3192eb045f5281ff184127a13aec4090f1fe4a6f2e31d5587460231c6" => :el_capitan
+    sha256 "f536aeb65fe9b37c0ee30ec2d7329dc071b9f9549d6b7ffd9fbf68a0dc636d5c" => :yosemite
   end
 
   keg_only :provided_by_osx
 
   depends_on "libmagic"
 
+  patch :DATA
+
   def install
+    ENV.prepend "LDFLAGS", "-L#{Formula["libmagic"].opt_lib} -lmagic"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install-exec"
@@ -32,3 +34,26 @@ class FileFormula < Formula
     system "#{bin}/file", test_fixtures("test.mp3")
   end
 end
+
+__END__
+diff --git a/src/Makefile.in b/src/Makefile.in
+index b6eeb20..4a7ae91 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -150,7 +150,6 @@ libmagic_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+ PROGRAMS = $(bin_PROGRAMS)
+ am_file_OBJECTS = file.$(OBJEXT)
+ file_OBJECTS = $(am_file_OBJECTS)
+-file_DEPENDENCIES = libmagic.la
+ AM_V_P = $(am__v_P_@AM_V@)
+ am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
+ am__v_P_0 = false
+@@ -352,7 +351,7 @@ libmagic_la_LDFLAGS = -no-undefined -version-info 1:0:0
+ @MINGW_TRUE@MINGWLIBS = -lgnurx -lshlwapi
+ libmagic_la_LIBADD = $(LTLIBOBJS) $(MINGWLIBS)
+ file_SOURCES = file.c
+-file_LDADD = libmagic.la
++file_LDADD = $(LDADD)
+ CLEANFILES = magic.h
+ EXTRA_DIST = magic.h.in
+ HDR = $(top_srcdir)/src/magic.h.in
